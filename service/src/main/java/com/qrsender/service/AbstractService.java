@@ -14,18 +14,18 @@ public abstract class AbstractService<T extends GenericEntity, PK extends Serial
     }
 
     @Override
-    public void create(T entity) {
-
+    public PK save(T entity) {
+        return getDao().save(entity);
     }
 
     @Override
     public T update(T entity) {
-        return null;
+        return getDao().update(entity);
     }
 
     @Override
     public void delete(PK id) {
-
+        getDao().delete(getById(id));
     }
     public abstract IGenericDao<T, PK> getDao();
 }

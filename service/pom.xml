@@ -11,17 +11,23 @@
 
     <artifactId>service</artifactId>
 
-<dependencies>
-    <dependency>
-        <groupId>mail</groupId>
-        <artifactId>dal</artifactId>
-        <version>${project.parent.version}</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>mail</groupId>
+            <artifactId>dal</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
-    <dependency>
-        <groupId>mail</groupId>
-        <artifactId>model</artifactId>
-        <version>${project.parent.version}</version>
-    </dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+    </dependencies>
 </project>

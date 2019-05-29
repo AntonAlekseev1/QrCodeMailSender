@@ -2,6 +2,7 @@ package com.qrsender.dal;
 
 import com.qrsender.api.dal.IGenericDao;
 import com.qrsender.model.GenericEntity;
+import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,8 +25,8 @@ public abstract class AbstractDao<T extends GenericEntity, PK extends Serializab
     }
 
     @Override
-    public void create(T entity) {
-        entityManager.persist(entity);
+    public PK save(T entity) {
+       return (PK) this.getSession().save(entity);
     }
 
     @Override
@@ -38,7 +39,7 @@ public abstract class AbstractDao<T extends GenericEntity, PK extends Serializab
         entityManager.remove(entity);
     }
 
-    protected EntityManager getEntityManager() {
-        return entityManager;
+    protected Session getSession() {
+        return entityManager.unwrap(Session.class);
     }
 }

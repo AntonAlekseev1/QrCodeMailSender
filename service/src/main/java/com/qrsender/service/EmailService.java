@@ -4,7 +4,11 @@ import com.qrsender.api.dal.IEmailDao;
 import com.qrsender.api.dal.IGenericDao;
 import com.qrsender.model.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public class EmailService extends AbstractService<Email, Long> {
 
     private final IEmailDao emailDao;

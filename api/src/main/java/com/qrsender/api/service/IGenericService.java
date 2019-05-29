@@ -8,7 +8,7 @@ public interface IGenericService<T extends GenericEntity, PK extends Serializabl
 
     T getById(PK id);
 
-    void create(T entity);
+    PK save(T entity);
 
     T update(T entity);
 
