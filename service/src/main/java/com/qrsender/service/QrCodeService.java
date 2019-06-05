@@ -37,6 +37,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
         this.fileStorageService = fileStorageService;
     }
 
+    @Override
     public Long createQrCode(String qrCodeText, int size, String fileType) throws IOException {
         Message message = new Message();
         message.setMessage(qrCodeText);
@@ -50,11 +51,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
     }
 
     @Override
-    public IGenericDao<QrCode, Long> getDao() {
-        return qrCodeDao;
-    }
-
-    private String decodeQrCode(byte[] image) throws IOException {
+    public String decodeQrCode(byte[] image) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bis);
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
@@ -66,5 +63,10 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
             System.out.println("There is no QR code in the image"); // todo change to logger
             return null;
         }
+    }
+
+    @Override
+    public IGenericDao<QrCode, Long> getDao() {
+        return qrCodeDao;
     }
 }
