@@ -1,10 +1,12 @@
 package com.qrsender.service;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.qrsender.api.dal.IFileStorageDao;
 import com.qrsender.api.dal.IGenericDao;
 import com.qrsender.api.service.IFileStorageService;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Hashtable;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -45,7 +49,10 @@ public class FileStorageService extends AbstractService<FileStorage, Long> imple
             throws IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()){
-            BitMatrix biteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size);
+            Map<EncodeHintType, Object> hints = new Hashtable<>();
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+            BitMatrix biteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hints);
             MatrixToImageWriter.writeToStream(biteMatrix, fileType, bos);
             return bos.toByteArray();
         } catch (WriterException e) {
