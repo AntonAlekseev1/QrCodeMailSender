@@ -59,7 +59,7 @@ public class QrCodeController {
     public Response readeQrCode(@RequestParam("file") MultipartFile file) {
         try {
             return new Response(qrCodeService.decodeQrCode(file.getBytes()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             // todo log exception
             ResponseError error = new ResponseError(ResponseError.ErrorType.UNEXPECTED_ERRORS, e.getMessage());
             return new Response(error);

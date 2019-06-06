@@ -51,7 +51,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
     }
 
     @Override
-    public String decodeQrCode(byte[] image) throws IOException {
+    public String decodeQrCode(byte[] image) throws Exception {
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bis);
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
@@ -61,7 +61,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
             return result.getText();
         } catch (NotFoundException e) {
             System.out.println("There is no QR code in the image"); // todo change to logger
-            return null;
+            throw new Exception("There is no QR code in the image");
         }
     }
 
