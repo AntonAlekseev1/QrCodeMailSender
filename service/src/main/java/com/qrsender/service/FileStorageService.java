@@ -11,6 +11,7 @@ import com.qrsender.api.dal.IFileStorageDao;
 import com.qrsender.api.dal.IGenericDao;
 import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.model.FileStorage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @Service
 @Transactional
+@Slf4j
 public class FileStorageService extends AbstractService<FileStorage, Long> implements IFileStorageService {
 
     private final IFileStorageDao fileStorageDao;
@@ -56,7 +58,7 @@ public class FileStorageService extends AbstractService<FileStorage, Long> imple
             MatrixToImageWriter.writeToStream(biteMatrix, fileType, bos);
             return bos.toByteArray();
         } catch (WriterException e) {
-            // todo log exception
+            log.warn("Write exception, {}", e.getMessage(), e);
         }
         return null;
     }
