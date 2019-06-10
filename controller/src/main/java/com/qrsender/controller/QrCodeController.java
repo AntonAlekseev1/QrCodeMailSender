@@ -5,6 +5,7 @@ import com.qrsender.api.service.IQrCodeService;
 import com.qrsender.controller.dto.QrCodeDto;
 import com.qrsender.controller.response.Response;
 import com.qrsender.controller.response.ResponseError;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/qr-code")
+@Slf4j
 public class QrCodeController {
 
     private static final String FILE_TYPE = "jpeg";
@@ -36,9 +38,10 @@ public class QrCodeController {
     public Response createQrCode(@RequestBody QrCodeDto dto) {
         try {
             Long qrCodeId = qrCodeService.createQrCode(dto.getMessage(), dto.getFileSize(), FILE_TYPE);
+            log.info("qr code created, id {}", qrCodeId);
             return new Response(qrCodeId);
         } catch (IOException e) {
-            // todo log exception
+            log.warn("Can't create qr code, exception: {}", e.getMessage());
             ResponseError error = new ResponseError(ResponseError.ErrorType.UNEXPECTED_ERRORS, e.getMessage());
             return new Response(error);
         }
@@ -46,12 +49,13 @@ public class QrCodeController {
 
     @GetMapping("/get-qr-image/{id}")
     public void getQrImage(@PathVariable Long id, HttpServletResponse response) {
-        byte [] qrImage = fileStorageService.getById(id).getFile();
         try {
+            byte[] qrImage = fileStorageService.getById(id).getFile();
             response.setContentType("image/jpeg");
             response.getOutputStream().write(qrImage);
-        } catch (IOException e) {
-            // todo log exception
+            log.info("success get qr code, id {}", id);
+        } catch (Exception e) {
+            log.warn("Qr code with id {} don't exist", id, e);
         }
     }
 
@@ -60,7 +64,7 @@ public class QrCodeController {
         try {
             return new Response(qrCodeService.decodeQrCode(file.getBytes()));
         } catch (Exception e) {
-            // todo log exception
+            log.warn(e.getMessage());
             ResponseError error = new ResponseError(ResponseError.ErrorType.UNEXPECTED_ERRORS, e.getMessage());
             return new Response(error);
         }

@@ -60,7 +60,6 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
             Result result = new MultiFormatReader().decode(bitmap);
             return result.getText();
         } catch (NotFoundException e) {
-            System.out.println("There is no QR code in the image"); // todo change to logger
             throw new Exception("There is no QR code in the image");
         }
     }
