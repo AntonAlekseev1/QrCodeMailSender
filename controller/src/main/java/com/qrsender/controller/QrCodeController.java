@@ -50,10 +50,11 @@ public class QrCodeController {
     @GetMapping("/get-qr-image/{id}")
     public void getQrImage(@PathVariable Long id, HttpServletResponse response) {
         try {
-            byte[] qrImage = fileStorageService.getById(id).getFile();
+            Long fileId = qrCodeService.getById(id).getFileId();
+            byte[] qrImage = fileStorageService.getById(fileId).getFile();
             response.setContentType("image/jpeg");
             response.getOutputStream().write(qrImage);
-            log.info("success get qr code, id {}", id);
+            log.info("success get qr image, qr code id {}, file id {}", id, fileId);
         } catch (Exception e) {
             log.warn("Qr code with id {} don't exist", id, e);
         }

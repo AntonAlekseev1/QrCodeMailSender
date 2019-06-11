@@ -10,7 +10,12 @@ public abstract class AbstractService<T extends GenericEntity, PK extends Serial
 
     @Override
     public T getById(PK id) {
-        return getDao().getById(id);
+        try {
+            return getDao().getById(id);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     @Override
