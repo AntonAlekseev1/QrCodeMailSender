@@ -3,6 +3,7 @@ package com.qrsender.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +21,7 @@ public class Email extends GenericEntity {
     private String recipientAddress;
     @Column(name = "file_id")
     private Long fileId;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="message_id")
     private Message message;
 }

@@ -51,6 +51,27 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
     }
 
     @Override
+    public QrCode createQrCode(byte[] image) throws Exception {
+        String qrMessage = decodeQrCode(image);
+
+        FileStorage fileStorage = new FileStorage();
+        fileStorage.setCreationDate(LocalDate.now());
+        fileStorage.setFile(image);
+        Long fileStorageId = fileStorageService.save(fileStorage);
+
+        Message message = new Message();
+        message.setMessage(qrMessage);
+        message.setCreationDate(LocalDate.now());
+
+        QrCode qrCode = new QrCode();
+        qrCode.setCreationDate(LocalDate.now());
+        qrCode.setMessage(message);
+        qrCode.setFileId(fileStorageId);
+        save(qrCode);
+        return qrCode;
+    }
+
+    @Override
     public String decodeQrCode(byte[] image) throws Exception {
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bis);

@@ -1,0 +1,4 @@
+    Thank you for using [(${appName})]!
+You can see your's Qr code in the attachments.
+Qr code message: [(${qrMessage})].
+Go to Qr generator app: [(${appUrl})]

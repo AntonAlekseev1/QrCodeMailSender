@@ -1,0 +1,16 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <h1>
+        Thank you for using <b th:text="${appName}"/>!
+    </h1>
+</head>
+<body>
+<div>
+    Qr code message: <b th:text="${qrMessage}"/>
+</div>
+<div>
+    <a th:href="${appUrl}">App_url</a>
+</div>
+</body>
+</html>
