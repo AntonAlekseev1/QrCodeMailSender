@@ -1,6 +1,7 @@
 package com.qrsender.controller;
 
 import com.qrsender.api.service.IEmailService;
+import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.api.service.IQrCodeService;
 import com.qrsender.controller.response.Response;
 import com.qrsender.model.QrCode;
@@ -23,25 +24,20 @@ public class EmailController {
     private static final String APP_HOME_PAGE_URL = "http://localhoct:4220";
     private final IEmailService emailService;
     private final IQrCodeService qrCodeService;
+    private final IFileStorageService fileStorageService;
 
-    public EmailController(IEmailService emailService, IQrCodeService qrCodeService) {
+    public EmailController(IEmailService emailService, IQrCodeService qrCodeService, IFileStorageService fileStorageService) {
         this.emailService = emailService;
         this.qrCodeService = qrCodeService;
+        this.fileStorageService = fileStorageService;
     }
 
     @PostMapping("/send")
-    public Response sendEmail(@RequestParam("toEmail") String toEmail, @RequestParam("file") MultipartFile file, @RequestParam("qrCodeId") Long qrCodeId) {
+    public Response sendEmail(@RequestParam("toEmail") String toEmail, @RequestParam("qrCodeId") Long qrCodeId) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("appName", APP_NAME);
         QrCode qrCode = qrCodeService.getById(qrCodeId);
-        try {
-            variables.put("qrImage", file.getBytes());
-            if (qrCode == null) {
-                qrCode = qrCodeService.createQrCode(file.getBytes());
-            }
-        } catch (Exception e) {
-            log.warn("Filed decode qr image", e);
-        }
+        variables.put("qrImage", fileStorageService.getById(qrCode.getFileId()).getFile());
         variables.put("qrMessage", qrCode.getMessage().getMessage());
         variables.put("appUrl", APP_HOME_PAGE_URL);
         emailService.sendEmailUsingTemplate(toEmail, "email_template", "test qr code service", variables);
