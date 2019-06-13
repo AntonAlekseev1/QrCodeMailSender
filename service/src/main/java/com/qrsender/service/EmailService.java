@@ -30,7 +30,7 @@ import java.util.UUID;
 @Slf4j
 public class EmailService extends AbstractService<Email, Long> implements IEmailService {
 
-    private static final String TEMPLATE_NAME_FORMAT ="%s.%s";
+    private static final String TEMPLATE_NAME_FORMAT = "%s.%s";
     private final IEmailDao emailDao;
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
@@ -43,30 +43,26 @@ public class EmailService extends AbstractService<Email, Long> implements IEmail
     }
 
     @Override
-    public void sendEmailUsingTemplate(String toEmail, String templateName, String subject, Map<String, Object> variables){
+    public void sendEmailUsingTemplate(String toEmail, String templateName, String subject, Map<String, Object> variables) throws Exception {
         MimeMessage message = emailSender.createMimeMessage();
         Multipart multiPart = new MimeMultipart("alternative");
-        try {
-            MimeBodyPart htmlPart = new MimeBodyPart();
-            htmlPart.setContent(getTemplate(templateName, variables, "html"), "text/html; charset=utf-8");
-            multiPart.addBodyPart(htmlPart);
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent(getTemplate(templateName, variables, "html"), "text/html; charset=utf-8");
+        multiPart.addBodyPart(htmlPart);
 
-            MimeBodyPart textPart = new MimeBodyPart();
-            textPart.setText(getTemplate(templateName, variables, "txt"), StandardCharsets.UTF_8.name());
-            File attachment = getAttachment(((byte[]) variables.get("qrImage")));
-            textPart.attachFile(attachment);
-            multiPart.addBodyPart(textPart);
+        MimeBodyPart textPart = new MimeBodyPart();
+        textPart.setText(getTemplate(templateName, variables, "txt"), StandardCharsets.UTF_8.name());
+        File attachment = getAttachment(((byte[]) variables.get("qrImage")));
+        textPart.attachFile(attachment);
+        multiPart.addBodyPart(textPart);
 
-            message.setSubject(subject);
-            message.setRecipients(Message.RecipientType.TO, toEmail);
-            message.setContent(multiPart);
-            emailSender.send(message);
-            log.debug("Message successfully send to email {}", toEmail);
-            if(!attachment.delete()) {
-                log.warn("File {} not deleted", attachment.getName());
-            }
-        }catch (Exception e) {
-            log.warn("Filed send message", e);
+        message.setSubject(subject);
+        message.setRecipients(Message.RecipientType.TO, toEmail);
+        message.setContent(multiPart);
+        emailSender.send(message);
+        log.info("Message successfully send to email {}", toEmail);
+        if (!attachment.delete()) {
+            log.warn("File {} not deleted", attachment.getName());
         }
     }
 
@@ -91,8 +87,8 @@ public class EmailService extends AbstractService<Email, Long> implements IEmail
     }
 
     private File getAttachment(byte[] image) {
-        File outputFile = new File("images/" + UUID.randomUUID() +".jpeg");
-        try(FileOutputStream outputStream = new FileOutputStream(outputFile)) {
+        File outputFile = new File("images/" + UUID.randomUUID() + ".jpeg");
+        try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
             outputStream.write(image);
             outputStream.flush();
         } catch (IOException e) {
