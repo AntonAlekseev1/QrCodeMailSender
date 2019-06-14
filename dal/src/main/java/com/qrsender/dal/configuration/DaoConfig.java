@@ -1,7 +1,5 @@
 package com.qrsender.dal.configuration;
 
-import com.qrsender.util.EncryptorUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +20,6 @@ import java.util.Properties;
 @ComponentScan("com.qrsender.util")
 public class DaoConfig {
 
-    private final EncryptorUtil encryptor;
     @Value("${database.driverClassName}")
     private String driverClassName;
     @Value("${database.url}")
@@ -42,14 +39,10 @@ public class DaoConfig {
     @Value("${hibernate.use_jdbc_metadata_defaults}")
     private String hibernateTempUseJdbcMetadataDefaults;
 
-    @Autowired
-    public DaoConfig(EncryptorUtil encryptor) {
-        this.encryptor = encryptor;
-    }
 
     @Bean
     public DataSource dataSource() {
-        return new DriverManagerDataSource(databaseUrl, username, encryptor.decrypt(password));
+        return new DriverManagerDataSource(databaseUrl, username, password);
     }
 
     @Bean
