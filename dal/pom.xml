@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dal</artifactId>
+
+    <properties>
+        <liquibase.version>3.6.3</liquibase.version>
+        <liquibase-plugin.version>3.6.3</liquibase-plugin.version>
+    </properties>
+
 <dependencies>
     <dependency>
         <groupId>mail</groupId>
@@ -26,6 +32,12 @@
         <groupId>postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>9.1-901-1.jdbc4</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+    <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-core</artifactId>
+        <version>${liquibase.version}</version>
     </dependency>
 </dependencies>
 

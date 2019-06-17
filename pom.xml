@@ -22,7 +22,6 @@
         <module>service</module>
         <module>controller</module>
         <module>util</module>
-        <module>database</module>
     </modules>
 
     <dependencies>
