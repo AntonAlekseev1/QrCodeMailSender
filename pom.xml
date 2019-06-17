@@ -20,9 +20,7 @@
         <module>model</module>
         <module>dal</module>
         <module>service</module>
-        <module>controller</module>
-        <module>util</module>
-    </modules>
+        <module>controller</module>    </modules>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
