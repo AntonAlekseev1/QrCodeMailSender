@@ -22,11 +22,6 @@
         <artifactId>api</artifactId>
         <version>${project.parent.version}</version>
     </dependency>
-    <dependency>
-        <groupId>mail</groupId>
-        <artifactId>util</artifactId>
-        <version>${project.parent.version}</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
     <dependency>
         <groupId>postgresql</groupId>
