@@ -7,6 +7,8 @@ import com.qrsender.controller.response.Response;
 import com.qrsender.controller.response.ResponseError;
 import com.qrsender.model.QrCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,13 +20,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/email")
 @Slf4j
+@PropertySource("classpath:qrCodeApp.properties")
 public class EmailController {
 
-    private static final String APP_NAME = "QR code sender";
-    private static final String APP_HOME_PAGE_URL = "http://localhoct:4220";
     private final IEmailService emailService;
     private final IQrCodeService qrCodeService;
     private final IFileStorageService fileStorageService;
+
+    @Value("${app.name}")
+    private String APP_NAME;
+    @Value("${app.home.page.url}")
+    private String APP_HOME_PAGE_URL;
 
     public EmailController(IEmailService emailService, IQrCodeService qrCodeService, IFileStorageService fileStorageService) {
         this.emailService = emailService;
