@@ -3,6 +3,7 @@ package com.qrsender.controller.configuration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableConfigurationProperties
 @ComponentScan({"com.qrsender.dal", "com.qrsender.service", "com.qrsender.controller"})
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
     /**
      * The variable "JASYPT_KEY" must be set in system environments
