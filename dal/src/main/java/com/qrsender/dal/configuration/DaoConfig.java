@@ -20,7 +20,7 @@ public class DaoConfig {
 
     @Value("${database.driverClassName}")
     private String driverClassName;
-    @Value("${database.url}")
+    @Value("${spring.datasource.url}")
     private String databaseUrl;
     @Value("${database.username}")
     private String username;

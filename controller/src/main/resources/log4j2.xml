@@ -64,11 +64,13 @@
             <appender-ref ref="FILE_DEBUG" level="debug"/>
             <appender-ref ref="FILE_INFO" level="info"/>
             <appender-ref ref="FILE_WARN" level="warn"/>
+            <appender-ref ref="CONSOLE" level="info"/>
         </logger>
         <logger name="org.springframework" additivity="false">
             <appender-ref ref="FILE_DEBUG" level="info"/>
             <appender-ref ref="FILE_INFO" level="info"/>
             <appender-ref ref="FILE_WARN" level="warn"/>
+            <appender-ref ref="CONSOLE" level="info"/>
         </logger>
         <logger name="com.qrsender" additivity="false">
             <appender-ref ref="FILE_DEBUG" level="debug"/>
