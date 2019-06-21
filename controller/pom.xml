@@ -12,12 +12,17 @@
     <artifactId>controller</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
 <dependencies>
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
-        <version>2.1.5.RELEASE</version>
         <exclusions>
             <exclusion>
                 <groupId>org.springframework.boot</groupId>
@@ -68,18 +73,23 @@
          <plugin>
              <groupId>org.springframework.boot</groupId>
              <artifactId>spring-boot-maven-plugin</artifactId>
-             <version>2.1.5.RELEASE</version>
              <configuration>
                  <mainClass>com.qrsender.controller.configuration.Application</mainClass>
                  <executable>true</executable>
+                 <additionalProperties>
+<!--                     <encoding.source>${project.build.sourceEncoding}</encoding.source>-->
+<!--                     <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>-->
+                     <java.source>${maven.compiler.source}</java.source>
+                     <java.target>${maven.compiler.target}</java.target>
+                 </additionalProperties>
              </configuration>
-             <executions>
-                 <execution>
-                     <goals>
-                         <goal>repackage</goal>
-                     </goals>
-                 </execution>
-             </executions>
+<!--             <executions>-->
+<!--                 <execution>-->
+<!--                     <goals>-->
+<!--                         <goal>repackage</goal>-->
+<!--                     </goals>-->
+<!--                 </execution>-->
+<!--             </executions>-->
          </plugin>
      </plugins>
  </build>
