@@ -77,19 +77,10 @@
                  <mainClass>com.qrsender.controller.configuration.Application</mainClass>
                  <executable>true</executable>
                  <additionalProperties>
-<!--                     <encoding.source>${project.build.sourceEncoding}</encoding.source>-->
-<!--                     <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>-->
                      <java.source>${maven.compiler.source}</java.source>
                      <java.target>${maven.compiler.target}</java.target>
                  </additionalProperties>
              </configuration>
-<!--             <executions>-->
-<!--                 <execution>-->
-<!--                     <goals>-->
-<!--                         <goal>repackage</goal>-->
-<!--                     </goals>-->
-<!--                 </execution>-->
-<!--             </executions>-->
          </plugin>
      </plugins>
  </build>

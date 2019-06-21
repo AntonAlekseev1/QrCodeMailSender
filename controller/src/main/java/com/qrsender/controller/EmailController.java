@@ -50,11 +50,10 @@ public class EmailController {
             emailService.sendEmailUsingTemplate(toEmail, "email_template", "QR codes generation service", variables);
             emailService.createAndSave(toEmail, qrCode.getFileId());
             return new Response("message send to " + toEmail);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.warn("Email not sent to {}", toEmail, e);
             ResponseError error = new ResponseError(ResponseError.ErrorType.ILLEGAL_ARGUMENTS, "Email not sent to " + toEmail);
             return new Response(error);
         }
-
     }
 }
