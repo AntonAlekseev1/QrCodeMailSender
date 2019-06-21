@@ -17,7 +17,7 @@ public class Application extends SpringBootServletInitializer {
      * The variable "JASYPT_KEY" must be set in system environments
      */
     public static void main(String[] args) {
-        System.setProperty("jasypt.encryptor.password", "CT480BX500SSD1"); //System.getenv("JASYPT_KEY")
+        System.setProperty("jasypt.encryptor.password", System.getenv("JASYPT_KEY"));
         SpringApplication.run(Application.class, args);
     }
 }

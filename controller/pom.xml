@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>controller</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
 <dependencies>
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
@@ -69,14 +69,17 @@
              <groupId>org.springframework.boot</groupId>
              <artifactId>spring-boot-maven-plugin</artifactId>
              <version>2.1.5.RELEASE</version>
-         </plugin>
-         <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-war-plugin</artifactId>
-             <version>3.2.3</version>
              <configuration>
-                 <failOnMissingWebXml>false</failOnMissingWebXml>
+                 <mainClass>com.qrsender.controller.configuration.Application</mainClass>
+                 <executable>true</executable>
              </configuration>
+             <executions>
+                 <execution>
+                     <goals>
+                         <goal>repackage</goal>
+                     </goals>
+                 </execution>
+             </executions>
          </plugin>
      </plugins>
  </build>
