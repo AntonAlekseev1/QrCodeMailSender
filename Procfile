@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=heroku -jar controller-1.0-SNAPSHOT.jar
+web: java -o -Dspring.profiles.active=heroku -jar controller-1.0-SNAPSHOT.jar
