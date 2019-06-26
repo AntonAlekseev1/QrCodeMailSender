@@ -22,17 +22,12 @@
         <artifactId>api</artifactId>
         <version>${project.parent.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
-        <groupId>mail</groupId>
-        <artifactId>util</artifactId>
-        <version>${project.parent.version}</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
-    <dependency>
-        <groupId>postgresql</groupId>
+        <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>9.1-901-1.jdbc4</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
     <dependency>
         <groupId>org.liquibase</groupId>

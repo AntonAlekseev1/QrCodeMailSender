@@ -13,9 +13,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Application {
 
     /**
-     * The variable "JASYPT_KEY" must be set in system environments
+     * The variables "JASYPT_KEY" & "JDBC_DATABASE_URL" must be set in system environments
      */
     public static void main(String[] args) {
+        System.setProperty("spring.datasource.url", System.getenv("JDBC_DATABASE_URL"));
         System.setProperty("jasypt.encryptor.password", System.getenv("JASYPT_KEY"));
         SpringApplication.run(Application.class, args);
     }
