@@ -13,6 +13,7 @@ import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.model.FileStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,6 +42,16 @@ public class FileStorageService extends AbstractService<FileStorage, Long> imple
         storage.setCreationDate(LocalDate.now());
         storage.setFile(generateQrCodeImage(qrCodeText, size, fileType));
         return fileStorageDao.save(storage);
+    }
+
+    /**
+     * This method delete images from file storage that were created more than two days ago.
+     * The method starts automatically every 'fixedDelay' milliseconds.
+     */
+    @Scheduled(fixedDelay = 1200000, initialDelay = 10000) //start task once at 20 minutes
+    public void deleteOldImages() {
+        List<FileStorage> oldImages = fileStorageDao.getFilesOlderThenDate(LocalDate.now().minusDays(1));
+        oldImages.forEach(fileStorageDao::delete);
     }
 
     @Override

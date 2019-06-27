@@ -5,6 +5,8 @@ import com.qrsender.api.service.IQrCodeService;
 import com.qrsender.controller.dto.QrCodeDto;
 import com.qrsender.controller.response.Response;
 import com.qrsender.controller.response.ResponseError;
+import com.qrsender.model.FileStorage;
+import com.qrsender.model.QrCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,14 +50,28 @@ public class QrCodeController {
     }
 
     @GetMapping("/get-qr-image/{id}")
-    public void getQrImage(@PathVariable Long id, HttpServletResponse response) {
+    public void getQrImage(@PathVariable Long id, HttpServletResponse response) throws IOException {
         try {
-            Long fileId = qrCodeService.getById(id).getFileId();
-            byte[] qrImage = fileStorageService.getById(fileId).getFile();
-            response.setContentType("image/jpeg");
-            response.getOutputStream().write(qrImage);
-            log.info("success get qr image, qr code id {}, file id {}", id, fileId);
+            QrCode qrCode = qrCodeService.getById(id);
+            if (qrCode != null) {
+                Long fileId = qrCode.getFileId();
+                FileStorage storage = fileStorageService.getById(fileId);
+                if (storage != null) {
+                    byte[] qrImage = storage.getFile();
+                    response.setContentType("image/jpeg");
+                    response.getOutputStream().write(qrImage);
+                    log.info("success get qr image, qr code id {}, file id {}", id, fileId);
+                    return;
+                }
+                response.setContentType("application/json");
+                response.sendError(404, "Image not found");
+                return;
+            }
+            response.setContentType("application/json");
+            response.sendError(404, "QrCode not found");
         } catch (Exception e) {
+            response.setContentType("application/json");
+            response.sendError(400, e.getMessage());
             log.warn("Qr code with id {} don't exist", id, e);
         }
     }
