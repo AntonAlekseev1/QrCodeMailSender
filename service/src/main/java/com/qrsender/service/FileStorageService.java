@@ -48,7 +48,7 @@ public class FileStorageService extends AbstractService<FileStorage, Long> imple
      * This method delete images from file storage that were created more than two days ago.
      * The method starts automatically every 'fixedDelay' milliseconds.
      */
-    @Scheduled(fixedDelay = 1200000, initialDelay = 10000) //start task once at 20 minutes
+    @Scheduled(fixedDelay = 86400000, initialDelay = 10000) //start task a day
     public void deleteOldImages() {
         List<FileStorage> oldImages = fileStorageDao.getFilesOlderThenDate(LocalDate.now().minusDays(1));
         oldImages.forEach(fileStorageDao::delete);
