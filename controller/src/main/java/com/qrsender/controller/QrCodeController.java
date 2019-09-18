@@ -1,5 +1,7 @@
 package com.qrsender.controller;
 
+import com.qrsender.api.exception.ExceptionType;
+import com.qrsender.api.exception.QrCodeException;
 import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.api.service.IQrCodeService;
 import com.qrsender.controller.dto.QrCodeDto;
@@ -44,7 +46,7 @@ public class QrCodeController {
             return new Response(qrCodeId);
         } catch (IOException e) {
             log.warn("Can't create qr code, exception: {}", e.getMessage());
-            ResponseError error = new ResponseError(ResponseError.ErrorType.UNEXPECTED_ERRORS, e.getMessage());
+            ResponseError error = new ResponseError(ExceptionType.QR_CODE_EXCEPTION, "Can't create qr code, exception:" + e.getMessage());
             return new Response(error);
         }
     }
@@ -80,9 +82,13 @@ public class QrCodeController {
     public Response readeQrCode(@RequestParam("file") MultipartFile file) {
         try {
             return new Response(qrCodeService.decodeQrCode(file.getBytes()));
-        } catch (Exception e) {
+        } catch (QrCodeException e) {
             log.warn(e.getMessage());
-            ResponseError error = new ResponseError(ResponseError.ErrorType.UNEXPECTED_ERRORS, e.getMessage());
+            ResponseError error = new ResponseError(ExceptionType.QR_CODE_EXCEPTION, e.getMessage());
+            return new Response(error);
+        } catch (IOException ex) {
+            log.warn(ex.getMessage());
+            ResponseError error = new ResponseError(ExceptionType.UNEXPECTED_ERRORS, ex.getMessage());
             return new Response(error);
         }
     }

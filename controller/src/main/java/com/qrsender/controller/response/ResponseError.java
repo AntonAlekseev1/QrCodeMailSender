@@ -1,53 +1,22 @@
 package com.qrsender.controller.response;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.qrsender.api.exception.ExceptionType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ResponseError {
 
-    private ErrorType errorType;
+    private ExceptionType exceptionType;
     private Object data;
 
-    public ResponseError(ErrorType errorType) {
-        this.errorType = errorType;
+    public ResponseError(ExceptionType exceptionType) {
+        this.exceptionType = exceptionType;
     }
 
-    public ResponseError(ErrorType errorType, Object data) {
-        this.errorType = errorType;
+    public ResponseError(ExceptionType exceptionType, Object data) {
+        this.exceptionType = exceptionType;
         this.data = data;
-    }
-
-    public ErrorType getErrorType() {
-        return errorType;
-    }
-
-    public void setErrorType(ErrorType errorType) {
-        this.errorType = errorType;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public enum ErrorType {
-        ILLEGAL_ARGUMENTS("Illegal Arguments"),
-        UNEXPECTED_ERRORS("UnexpectedErrors"),
-        FORBIDDEN("Forbidden"),
-        ACCESS_DENIED("AccessDenied"),
-        FORBIDDEN_DELETE_ENTITY("Forbidden delete entity");
-
-        private String name;
-
-        ErrorType(String name) {
-            this.name = name;
-        }
-
-        @JsonValue
-        public String getName() {
-            return name;
-        }
     }
 }

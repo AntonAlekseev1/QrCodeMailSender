@@ -2,10 +2,12 @@ package com.qrsender.service;
 
 import com.qrsender.api.dal.IEmailDao;
 import com.qrsender.api.dal.IGenericDao;
+import com.qrsender.api.exception.EmailException;
 import com.qrsender.api.service.IEmailService;
 import com.qrsender.model.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -43,26 +46,33 @@ public class EmailService extends AbstractService<Email, Long> implements IEmail
     }
 
     @Override
-    public void sendEmailUsingTemplate(String toEmail, String templateName, String subject, Map<String, Object> variables) throws Exception {
+    public void sendEmailUsingTemplate(String toEmail, String templateName, String subject, Map<String, Object> variables) throws EmailException {
         MimeMessage message = emailSender.createMimeMessage();
         Multipart multiPart = new MimeMultipart("alternative");
         MimeBodyPart htmlPart = new MimeBodyPart();
-        htmlPart.setContent(getTemplate(templateName, variables, "html"), "text/html; charset=utf-8");
-        multiPart.addBodyPart(htmlPart);
-
-        MimeBodyPart textPart = new MimeBodyPart();
-        textPart.setText(getTemplate(templateName, variables, "txt"), StandardCharsets.UTF_8.name());
         File attachment = getAttachment(((byte[]) variables.get("qrImage")));
-        textPart.attachFile(attachment);
-        multiPart.addBodyPart(textPart);
-
-        message.setSubject(subject);
-        message.setRecipients(Message.RecipientType.TO, toEmail);
-        message.setContent(multiPart);
-        emailSender.send(message);
-        log.info("Message successfully send to email {}", toEmail);
-        if (!attachment.delete()) {
-            log.warn("File {} not deleted", attachment.getName());
+        try {
+            htmlPart.setContent(getTemplate(templateName, variables, "html"), "text/html; charset=utf-8");
+            multiPart.addBodyPart(htmlPart);
+            MimeBodyPart textPart = new MimeBodyPart();
+            textPart.setText(getTemplate(templateName, variables, "txt"), StandardCharsets.UTF_8.name());
+            textPart.attachFile(attachment);
+            multiPart.addBodyPart(textPart);
+            message.setSubject(subject);
+            message.setRecipients(Message.RecipientType.TO, toEmail);
+            message.setContent(multiPart);
+            emailSender.send(message);
+            log.info("Message successfully send to email {}", toEmail);
+        } catch (MessagingException | IOException e) {
+            log.warn("Can't create email to {}", toEmail, e);
+            throw new EmailException("email creation exception");
+        } catch (MailException ex) {
+            log.warn("Can't send email to {}", toEmail, ex);
+            throw new EmailException("Email not sent ");
+        } finally {
+            if (!attachment.delete()) {
+                log.warn("File {} not deleted", attachment.getName());
+            }
         }
     }
 
