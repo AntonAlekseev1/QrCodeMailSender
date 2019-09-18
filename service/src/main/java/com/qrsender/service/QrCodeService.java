@@ -9,6 +9,7 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.qrsender.api.dal.IGenericDao;
 import com.qrsender.api.dal.IQrCodeDao;
+import com.qrsender.api.exception.QrCodeException;
 import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.api.service.IQrCodeService;
 import com.qrsender.model.FileStorage;
@@ -72,7 +73,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
     }
 
     @Override
-    public String decodeQrCode(byte[] image) throws Exception {
+    public String decodeQrCode(byte[] image) throws QrCodeException, IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bis);
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
@@ -81,7 +82,7 @@ public class QrCodeService extends AbstractService<QrCode, Long> implements IQrC
             Result result = new MultiFormatReader().decode(bitmap);
             return result.getText();
         } catch (NotFoundException e) {
-            throw new Exception("There is no QR code in the image");
+            throw new QrCodeException("There is no QR code in the image");
         }
     }
 

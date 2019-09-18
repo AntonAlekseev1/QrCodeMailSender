@@ -1,5 +1,7 @@
 package com.qrsender.controller;
 
+import com.qrsender.api.exception.EmailException;
+import com.qrsender.api.exception.ExceptionType;
 import com.qrsender.api.service.IEmailService;
 import com.qrsender.api.service.IFileStorageService;
 import com.qrsender.api.service.IQrCodeService;
@@ -50,9 +52,9 @@ public class EmailController {
             emailService.sendEmailUsingTemplate(toEmail, "email_template", "QR codes generation service", variables);
             emailService.createAndSave(toEmail, qrCode.getFileId());
             return new Response("message send to " + toEmail);
-        } catch (Exception e) {
+        } catch (EmailException e) {
             log.warn("Email not sent to {}", toEmail, e);
-            ResponseError error = new ResponseError(ResponseError.ErrorType.ILLEGAL_ARGUMENTS, "Email not sent to " + toEmail);
+            ResponseError error = new ResponseError(ExceptionType.INVALID_EMAIL_DATA, e.getMessage() + ": to " + toEmail);
             return new Response(error);
         }
     }
