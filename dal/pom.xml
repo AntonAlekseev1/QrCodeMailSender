@@ -12,7 +12,7 @@
     <artifactId>dal</artifactId>
 
     <properties>
-        <liquibase.version>3.6.3</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <liquibase-plugin.version>3.6.3</liquibase-plugin.version>
     </properties>
 
